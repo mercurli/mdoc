@@ -18,6 +18,11 @@ import org.springframework.stereotype.Component;
 public class ShiroRealm extends AuthorizingRealm {
 
     @Override
+    public boolean supports(AuthenticationToken token) {
+        return super.supports(token);
+    }
+
+    @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         return null;
     }

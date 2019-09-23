@@ -1,6 +1,9 @@
 package com.mer.mdoc.modules.system.entity;
 
+import lombok.Data;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -10,6 +13,8 @@ import java.io.Serializable;
  * @version: V1.0
  * @title 用户 角色关系表
  */
+@Data
+@Entity
 public class SysUserRole implements Serializable {
 
     @Id
