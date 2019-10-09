@@ -1,12 +1,10 @@
 package com.mer.mdoc.modules.system.entity;
 
+import com.mer.mdoc.modules.system.entity.base.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author Mercurli
@@ -16,18 +14,16 @@ import java.util.Date;
  */
 @Data
 @Entity
-public class SysRole implements Serializable {
+public class SysRole extends BaseEntity {
 
-    @Id
-    @Column(length = 32)
-    private String id;
 
     @Column
     private String name;
 
+    /**
+     * 角色状态 1-启用 0-禁用
+     */
     @Column
-    private Date createTime;
+    private Integer status = 1;
 
-    @Column
-    private Date updateTime = new Date();
 }

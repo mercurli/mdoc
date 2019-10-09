@@ -1,11 +1,10 @@
 package com.mer.mdoc.modules.system.entity;
 
+import com.mer.mdoc.modules.system.entity.base.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,11 +15,7 @@ import java.util.Date;
  */
 @Data
 @Entity
-public class SysUser implements Serializable {
-
-    @Id
-    @Column(length = 32)
-    private String id;
+public class SysUser extends BaseEntity {
 
     @Column(nullable = false)
     private String username;
@@ -28,8 +23,14 @@ public class SysUser implements Serializable {
     @Column(nullable = false)
     private String password;
 
+    /**
+     * 密码盐
+     */
+    @Column(nullable = false)
+    private String salt;
+
     @Column
-    private String nick;
+    private String name;
 
     /**
      * 头像
@@ -46,14 +47,13 @@ public class SysUser implements Serializable {
     @Column
     private Integer sex;
 
-
     @Column
     private String email;
 
+    /**
+     * 用户状态 1-正常 0-注销
+     */
     @Column
-    private Date createTime;
-
-    @Column
-    private Date updateTime = new Date();
+    private Integer status = 1;
 
 }

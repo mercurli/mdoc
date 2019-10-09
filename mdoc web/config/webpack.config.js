@@ -49,6 +49,8 @@ const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+const lessRegex = /\.less$/;
+const lessModuleRegex = /\.module\.less$/;
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
@@ -114,20 +116,33 @@ module.exports = function(webpackEnv) {
       },
     ].filter(Boolean);
     if (preProcessor) {
-      loaders.push(
-        {
-          loader: require.resolve('resolve-url-loader'),
-          options: {
-            sourceMap: isEnvProduction && shouldUseSourceMap,
-          },
-        },
-        {
-          loader: require.resolve(preProcessor),
-          options: {
-            sourceMap: true,
-          },
-        }
-      );
+      // loaders.push(
+      //   {
+      //     loader: require.resolve('resolve-url-loader'),
+      //     options: {
+      //       sourceMap: isEnvProduction && shouldUseSourceMap,
+      //     },
+      //   },
+      //   {
+      //     loader: require.resolve(preProcessor),
+      //     options: {
+      //       sourceMap: true,
+      //     },
+      //   }
+      // );
+      let loader = require.resolve(preProcessor)
+      if (preProcessor === "less-loader") {
+          loader = {
+              loader,
+              options: {
+                  modifyVars: {
+                      'primary-color':'#25b864'
+                  },
+                  javascriptEnabled: true
+              }
+          }
+      }
+      loaders.push(loader)
     }
     return loaders;
   };
@@ -362,24 +377,17 @@ module.exports = function(webpackEnv) {
                 ),
                 
                 plugins: [
-                  [
-                    require.resolve('babel-plugin-named-asset-import'),
+                  ['import', 
                     {
-                      loaderMap: {
-                        svg: {
-                          ReactComponent:
-                            '@svgr/webpack?-svgo,+titleProp,+ref![path]',
-                        },
-                      },
-                    },
+                      libraryName: 'antd',
+                      style: true
+                    }
                   ],
                 ],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
                 // directory for faster rebuilds.
-                cacheDirectory: true,
-                cacheCompression: isEnvProduction,
-                compact: isEnvProduction,
+                cacheDirectory: true
               },
             },
             // Process any JS outside of the app with Babel.
@@ -471,6 +479,19 @@ module.exports = function(webpackEnv) {
                 },
                 'sass-loader'
               ),
+            },
+            // less-loader
+            {
+              test: lessRegex,
+              exclude: lessModuleRegex,
+              use: getStyleLoaders(
+                {
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                },
+                'less-loader'
+              ),
+              sideEffects: true,
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.

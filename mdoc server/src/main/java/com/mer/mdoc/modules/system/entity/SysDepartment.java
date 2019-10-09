@@ -1,12 +1,10 @@
 package com.mer.mdoc.modules.system.entity;
 
+import com.mer.mdoc.modules.system.entity.base.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author Mercurli
@@ -16,11 +14,7 @@ import java.util.Date;
  */
 @Data
 @Entity
-public class SysDepartment implements Serializable {
-
-    @Id
-    @Column(length = 32)
-    private String id;
+public class SysDepartment extends BaseEntity {
 
     @Column
     private String name;
@@ -34,9 +28,4 @@ public class SysDepartment implements Serializable {
     @Column
     private boolean enabled = true;
 
-    @Column
-    private Date createTime;
-
-    @Column
-    private Date updateTime = new Date();
 }

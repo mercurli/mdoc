@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author Mercurli
  * @date 2019/9/23
- * @version: V1.0
+ * @version: 1.0
  * @title
  */
 @Configuration
@@ -28,7 +28,8 @@ public class ShiroConfig {
         // 拦截器
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);
-
+        filterChainDefinitionMap.put("/role/**", "anon");
+        filterChainDefinitionMap.put("/user/**", "anon");
         return shiroFilter;
     }
 

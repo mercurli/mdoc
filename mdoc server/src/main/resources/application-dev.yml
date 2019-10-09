@@ -19,3 +19,8 @@ spring:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     show-sql: true
 
+mybatis:
+  mapper-locations: classpath*:com/mer/mdoc/modules/**/mapper/xml/*Mapper.xml
+
+
+
