@@ -1,6 +1,7 @@
 package com.mer.mdoc.core.vo;
 
-import lombok.Data;
+import lombok.Setter;
+import lombok.Getter;
 
 import java.io.Serializable;
 
@@ -10,14 +11,15 @@ import java.io.Serializable;
  * @version: V1.0
  * @title
  */
-@Data
-public class Result implements Serializable {
+@Setter
+@Getter
+public class Result<T> implements Serializable {
 
     private boolean success;
 
     private String message;
 
-    private Object data;
+    private T data;
 
     // 时间戳
     private long timestamp = System.currentTimeMillis();
@@ -33,17 +35,18 @@ public class Result implements Serializable {
         this.message = message;
     }
 
-    public Result(boolean success, String message, Object data) {
+    public Result(boolean success, String message, T data) {
         this.success = success;
         this.message = message;
         this.data = data;
     }
 
-    public static Result ok() {
-        return new Result(true);
+    public static Result<Object> ok() {
+        return new Result<>(true);
     }
 
-    public static Result error(String message) {
-        return new Result(false, message);
+    public static Result<Object> error(String message) {
+        return new Result<>(false, message);
     }
+
 }

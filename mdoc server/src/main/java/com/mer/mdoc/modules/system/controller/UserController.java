@@ -19,11 +19,11 @@ import java.util.Date;
 public class UserController {
 
     @RequestMapping("/add")
-    public Result addUser(SysUser user) {
+    public Result<Object> addUser(SysUser user) {
         String salt = PasswordUtil.genSalt(8);
         user.setCreateTime(new Date());
         user.setSalt(salt);
-
         return Result.ok();
     }
+
 }

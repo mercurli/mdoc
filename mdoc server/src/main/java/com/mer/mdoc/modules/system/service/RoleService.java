@@ -1,8 +1,8 @@
 package com.mer.mdoc.modules.system.service;
 
-import com.mer.mdoc.core.vo.Result;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mer.mdoc.modules.system.entity.SysRole;
-import com.mer.mdoc.modules.system.mapper.RoleMapper;
+import com.mer.mdoc.modules.system.mapper.SysRoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,22 +18,18 @@ import java.util.List;
 public class RoleService {
 
     @Autowired
-    private RoleMapper roleMapper;
+    private SysRoleMapper sysRoleMapper;
 
-    public Result addRole(SysRole role) {
-        int i = roleMapper.addRole(role);
-        if (i == 1) {
-            return Result.ok();
-        } else {
-            return Result.error("创建失败");
-        }
+    public boolean add(SysRole role) {
+        return sysRoleMapper.insert(role) > 0;
     }
 
-    public Result getRoleList() {
-        Result result = new Result();
-        result.setSuccess(true);
-        List<SysRole> roles = roleMapper.getRoleList();
-        result.setData(roles);
-        return result;
+    public boolean remove(String id) {
+        return sysRoleMapper.deleteById(id) > 0;
     }
+
+    public List<SysRole>  getList() {
+        return sysRoleMapper.selectList(new QueryWrapper<>());
+    }
+
 }

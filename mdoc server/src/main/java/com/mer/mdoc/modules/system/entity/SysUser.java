@@ -1,7 +1,8 @@
 package com.mer.mdoc.modules.system.entity;
 
 import com.mer.mdoc.modules.system.entity.base.BaseEntity;
-import lombok.Data;
+import lombok.Setter;
+import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +14,8 @@ import java.util.Date;
  * @version: V1.0
  * @title 用户表
  */
-@Data
+@Setter
+@Getter
 @Entity
 public class SysUser extends BaseEntity {
 

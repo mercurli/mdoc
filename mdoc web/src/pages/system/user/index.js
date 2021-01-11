@@ -1,6 +1,5 @@
 import React from 'react'
 import { Card, Table, Button, Modal, Form, Input, Radio, Select } from 'antd'
-import Http from '../../../util/http'
 
 export default class User extends React.Component {
 
@@ -67,7 +66,7 @@ export default class User extends React.Component {
                 <Card title="用户管理" extra={<Button type="primary" onClick={this.showMoadl}>新增</Button>}>
                     <Table columns={colums} dataSource={data}/>
                 </Card>
-                <Modal width="600px" title="新增用户" okText="确定" cancelText="取消" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                <Modal width="600px" title="新增用户" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel}>
                     <UserForm />
                 </Modal>
             </div>

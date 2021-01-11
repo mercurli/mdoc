@@ -1,7 +1,7 @@
 package com.mer.mdoc.modules.system.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mer.mdoc.modules.system.entity.SysUser;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Mercurli
@@ -9,8 +9,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @version: 1.0
  * @title
  */
-@Mapper
-public interface UserMapper {
+public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    SysUser getUser(String username);
 }

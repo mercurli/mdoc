@@ -20,13 +20,12 @@ public class LoginController {
     private UserService userService;
 
     @RequestMapping("/login")
-    public Result login(String username, String password) {
+    public Result<Object> login(String username, String password) {
         SysUser userInfo = userService.getUserByUsername(username);
-        Result result = userService.checkUserEnable(userInfo);
+        Result<Object> result = userService.checkUserEnable(userInfo);
         if (!result.isSuccess()) {
             return result;
         }
-
         return Result.ok();
     }
 }

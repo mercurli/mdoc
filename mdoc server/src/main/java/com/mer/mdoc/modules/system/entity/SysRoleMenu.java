@@ -6,27 +6,25 @@ import lombok.Getter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.io.Serializable;
 
 /**
  * @author Mercurli
- * @date 2019/9/23
- * @version: V1.0
- * @title 用户 部门关系表
+ * @date 2019/10/15
+ * @version: 1.0
+ * @title
  */
 @Setter
 @Getter
 @Entity
-public class SysUserDepartment implements Serializable {
+public class SysRoleMenu {
 
     @Id
     @Column(length = 32)
     private String id;
 
     @Column(length = 32)
-    private String uId;
+    private String rId;
 
     @Column(length = 32)
-    private String departId;
-
+    private String mId;
 }

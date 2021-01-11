@@ -20,7 +20,6 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
-
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
@@ -30,6 +29,7 @@ public class ShiroConfig {
         shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);
         filterChainDefinitionMap.put("/role/**", "anon");
         filterChainDefinitionMap.put("/user/**", "anon");
+        filterChainDefinitionMap.put("/menu/**", "anon");
         return shiroFilter;
     }
 
@@ -47,4 +47,5 @@ public class ShiroConfig {
         advisor.setSecurityManager(securityManager);
         return advisor;
     }
+
 }

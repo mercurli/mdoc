@@ -7,7 +7,7 @@ export default class Header extends React.Component {
 
     render() {
         const content = (
-            <div class="mer-user-wrapper">
+            <div className="mer-user-wrapper">
                 <p>Mer</p>
                 <Menu style={{width: 250}}>
                     <Menu.Divider/>
@@ -27,11 +27,8 @@ export default class Header extends React.Component {
                         </Menu>
                     </div>
                     <div className="mer-header-bar">
-                        <div className="mer-header-notify mer-header-bar-item">
-                            <Icon type="bell" />
-                        </div>
-                        <Popover placement="bottomRight" content={content}>
-                            <Avatar size="small" icon="user" />
+                        <Popover placement="bottomRight" content={content} overlayClassName="mer-header-popover">
+                            <Avatar size="small" icon="user" className="mer-header-avater"/>
                         </Popover>
                     </div>
                 </div>

@@ -1,7 +1,8 @@
 package com.mer.mdoc.modules.system.entity;
 
 import com.mer.mdoc.modules.system.entity.base.BaseEntity;
-import lombok.Data;
+import lombok.Setter;
+import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +13,8 @@ import javax.persistence.Entity;
  * @version: V1.0
  * @title 部门表
  */
-@Data
+@Setter
+@Getter
 @Entity
 public class SysDepartment extends BaseEntity {
 

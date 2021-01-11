@@ -10,6 +10,7 @@ export default class Http {
                 method: 'get',
                 params: data
             }).then((response) => {
+                debugger;
                 if (response.status === 200) {
                     let result = response.data;
                     if (result.success) {

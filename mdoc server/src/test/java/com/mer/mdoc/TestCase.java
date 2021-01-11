@@ -1,8 +1,12 @@
 package com.mer.mdoc;
 
-import com.mer.mdoc.core.util.IdUtil;
-import com.mer.mdoc.core.util.PasswordUtil;
+import com.mer.mdoc.script.ReplaceScript;
+import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * @author Mercurli
@@ -10,16 +14,20 @@ import org.junit.Test;
  * @version: V1.0
  * @title
  */
+@Slf4j
 public class TestCase {
 
     @Test
     public void test1() {
-        String salt = "2ASOE47B";
-        String username = "admin";
-        String password = "123456";
-        String encrypt = PasswordUtil.encrypt(username, password, salt);
-        System.out.println(encrypt);
-        String decrypt = PasswordUtil.decrypt(encrypt, password, salt);
-        System.out.println(decrypt);
+        try {
+            ReplaceScript.entityToPlusMapper("com.mer.mdoc.modules.system.entity");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TemplateException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
+
 }

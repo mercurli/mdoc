@@ -1,7 +1,8 @@
 package com.mer.mdoc.modules.system.entity.base;
 
 import com.mer.mdoc.core.util.IdUtil;
-import lombok.Data;
+import lombok.Setter;
+import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -15,7 +16,8 @@ import java.util.Date;
  * @version: 1.0
  * @title
  */
-@Data
+@Setter
+@Getter
 @MappedSuperclass
 public class BaseEntity implements Serializable {
 

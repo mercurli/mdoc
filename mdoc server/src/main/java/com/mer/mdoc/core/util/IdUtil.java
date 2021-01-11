@@ -13,4 +13,5 @@ public class IdUtil {
     public static String generateId() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
+
 }

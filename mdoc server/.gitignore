@@ -1,12 +1,5 @@
 target/
 
-### STS ###
-.classpath
-.project
-.settings
-.springBeans
-.sts4-cache
-
 ### IntelliJ IDEA ###
 .idea
 *.iws

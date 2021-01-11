@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as serviceWorker from './serviceWorker';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/es/locale/zh_CN';
 import Router from './router';
+import * as serviceWorker from './serviceWorker';
 import './themes/index.less';
 
 ReactDOM.render(
-    <div>
+    <ConfigProvider locale={zhCN}>
         <Router/>
-    </div>
+    </ConfigProvider>
     , document.getElementById('root')
 );
 

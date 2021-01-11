@@ -1,8 +1,9 @@
 package com.mer.mdoc.modules.system.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mer.mdoc.core.vo.Result;
 import com.mer.mdoc.modules.system.entity.SysUser;
-import com.mer.mdoc.modules.system.mapper.UserMapper;
+import com.mer.mdoc.modules.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     @Autowired
-    private UserMapper userMapper;
+    private SysUserMapper sysUserMapper;
 
     /**
      * 通过用户名获取用户信息
@@ -24,7 +25,9 @@ public class UserService {
      * @return
      */
     public SysUser getUserByUsername(String username) {
-        return userMapper.getUser(username);
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        return sysUserMapper.selectOne(queryWrapper);
     }
 
     /**
@@ -32,7 +35,7 @@ public class UserService {
      * @param userInfo
      * @return
      */
-    public Result checkUserEnable(SysUser userInfo) {
+    public Result<Object> checkUserEnable(SysUser userInfo) {
         if (userInfo == null) {
             return Result.error("该用户不存在");
         }

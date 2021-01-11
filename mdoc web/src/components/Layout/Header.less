@@ -40,21 +40,22 @@
     line-height: 24px;
     text-align: center;
 }
-.mer-header-notify {
-    
-}
+
 .mer-header-avater {
-    background-color: #eee;
-    border-radius: 50%;
+    &:hover {
+        cursor: pointer;
+    }
 }
-.ant-popover-inner-content {
-    padding: 12px 0;
-    .ant-menu-vertical {
-        border-right: none;
-        .ant-menu-item {
-            margin-bottom: none;
-            &.ant-menu-item-active {
-                background-color: #e9f7ec;
+.mer-header-popover {
+    .ant-popover-inner-content {
+        padding: 12px 0;
+        .ant-menu-vertical {
+            border-right: none;
+            .ant-menu-item {
+                margin-bottom: none;
+                &.ant-menu-item-active {
+                    background-color: #e9f7ec;
+                }
             }
         }
     }

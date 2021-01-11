@@ -1,8 +1,8 @@
 package com.mer.mdoc.modules.system.controller;
 
 import com.mer.mdoc.core.vo.Result;
-import com.mer.mdoc.modules.system.entity.SysRole;
-import com.mer.mdoc.modules.system.service.RoleService;
+import com.mer.mdoc.modules.system.entity.SysMenu;
+import com.mer.mdoc.modules.system.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,40 +11,39 @@ import java.util.List;
 
 /**
  * @author Mercurli
- * @date 2019/10/8
+ * @date 2019/10/15
  * @version: 1.0
  * @title
  */
 @RestController
-@RequestMapping("/role/")
-public class RoleContorller {
+@RequestMapping("/menu/")
+public class MenuController {
 
     @Autowired
-    private RoleService roleService;
+    private MenuService menuService;
 
-    @RequestMapping("add")
-    public Result<Object> add(SysRole role) {
-        if (roleService.add(role)) {
+    @RequestMapping("/add")
+    public Result<Object> add(SysMenu menu) {
+        if (menuService.add(menu)) {
             return Result.ok();
         } else {
             return Result.error("创建失败");
         }
     }
 
-    @RequestMapping("remove")
+    @RequestMapping("/remove")
     public Result<Object> remove(String id) {
-        if (roleService.remove(id)) {
+        if (menuService.remove(id)) {
             return Result.ok();
         } else {
             return Result.error("删除失败");
         }
     }
 
-    @RequestMapping("getList")
-    public Result<List<SysRole>> getList() {
-        Result<List<SysRole>>result = new Result<>(true);
-        result.setData(roleService.getList());
+    @RequestMapping("/getList")
+    public Result<List<SysMenu>> getList() {
+        Result<List<SysMenu>> result = new Result<>(true);
+        result.setData(menuService.getList());
         return result;
     }
-
 }
