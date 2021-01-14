@@ -22,7 +22,7 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    @RequestMapping("/add")
+    @RequestMapping("add")
     public Result<Object> add(SysMenu menu) {
         if (menuService.add(menu)) {
             return Result.ok();
@@ -31,7 +31,7 @@ public class MenuController {
         }
     }
 
-    @RequestMapping("/remove")
+    @RequestMapping("remove")
     public Result<Object> remove(String id) {
         if (menuService.remove(id)) {
             return Result.ok();
@@ -40,7 +40,7 @@ public class MenuController {
         }
     }
 
-    @RequestMapping("/getList")
+    @RequestMapping("getList")
     public Result<List<SysMenu>> getList() {
         Result<List<SysMenu>> result = new Result<>(true);
         result.setData(menuService.getList());
