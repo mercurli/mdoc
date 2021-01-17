@@ -6,8 +6,8 @@
         <a-input
           size="large"
           type="text"
-          :placeholder="$t('user.register.email.placeholder')"
-          v-decorator="['email', {rules: [{ required: true, type: 'email', message: $t('user.email.required') }], validateTrigger: ['change', 'blur']}]"
+          :placeholder="$t('user.register.userName.placeholder')"
+          v-decorator="['username', {initialValue: '', rules: [{ required: true, message: $t('user.userName.required') }], validateTrigger: ['change', 'blur']}]"
         ></a-input>
       </a-form-item>
 
@@ -31,7 +31,7 @@
             size="large"
             @click="handlePasswordInputClick"
             :placeholder="$t('user.register.password.placeholder')"
-            v-decorator="['password', {rules: [{ required: true, message: $t('user.password.required') }, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
+            v-decorator="['password', {initialValue: '', rules: [{ required: true, message: $t('user.password.required') }, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
           ></a-input-password>
         </a-form-item>
       </a-popover>
@@ -40,12 +40,12 @@
         <a-input-password
           size="large"
           :placeholder="$t('user.register.confirm-password.placeholder')"
-          v-decorator="['password2', {rules: [{ required: true, message: $t('user.password.required') }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
+          v-decorator="['password2', {initialValue: '', rules: [{ required: true, message: $t('user.password.required') }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
         ></a-input-password>
       </a-form-item>
 
       <a-form-item>
-        <a-input size="large" :placeholder="$t('user.login.mobile.placeholder')" v-decorator="['mobile', {rules: [{ required: true, message: $t('user.phone-number.required'), pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
+        <a-input size="large" :placeholder="$t('user.login.mobile.placeholder')" v-decorator="['mobile', {initialValue: '', rules: [{ required: true, message: $t('user.phone-number.required'), pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
           <a-select slot="addonBefore" size="large" defaultValue="+86">
             <a-select-option value="+86">+86</a-select-option>
             <a-select-option value="+87">+87</a-select-option>
@@ -60,7 +60,7 @@
             <a-input style="width: 80%" size="large" placeholder="11 位手机号"></a-input>
           </a-input-group>-->
 
-      <a-row :gutter="16">
+      <!-- <a-row :gutter="16">
         <a-col class="gutter-row" :span="16">
           <a-form-item>
             <a-input size="large" type="text" :placeholder="$t('user.login.mobile.verification-code.placeholder')" v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
@@ -76,7 +76,7 @@
             @click.stop.prevent="getCaptcha"
             v-text="!state.smsSendBtn && $t('user.register.get-verification-code')||(state.time+' s')"></a-button>
         </a-col>
-      </a-row>
+      </a-row> -->
 
       <a-form-item>
         <a-button
@@ -96,7 +96,9 @@
 </template>
 
 <script>
-import { getSmsCaptcha } from '@/api/login'
+import md5 from 'md5'
+
+import { getSmsCaptcha, register } from '@/api/login'
 import { deviceMixin } from '@/store/device-mixin'
 import { scorePassword } from '@/utils/util'
 
@@ -161,11 +163,12 @@ export default {
           this.state.level = 1
         }
         if (scorePassword(value) >= 60) {
-        this.state.level = 2
+          this.state.level = 2
         }
         if (scorePassword(value) >= 80) {
-        this.state.level = 3
+          this.state.level = 3
         }
+        callback()
       } else {
         this.state.level = 0
         callback(new Error(this.$t('user.password.strength.msg')))
@@ -187,10 +190,6 @@ export default {
     },
 
     handlePhoneCheck (rule, value, callback) {
-      console.log('handlePhoneCheck, rule:', rule)
-      console.log('handlePhoneCheck, value', value)
-      console.log('handlePhoneCheck, callback', callback)
-
       callback()
     },
 
@@ -204,18 +203,38 @@ export default {
 
     handleSubmit () {
       const { form: { validateFields }, state, $router } = this
-      validateFields({ force: true }, (err, values) => {
+      validateFields((err, values) => {
         if (!err) {
-          state.passwordLevelChecked = false
-          $router.push({ name: 'registerResult', params: { ...values } })
+          console.log(values)
+          values.password = md5(values.password)
+          register(values).then(response => {
+            console.log(response)
+            if (response.success) {
+              state.passwordLevelChecked = false
+              $router.push({ name: 'registerResult', params: { ...values } })
+            } else {
+              this.$notification['error']({
+                message: '错误',
+                description: response.message,
+                duration: 4
+              })
+            }
+          }).catch(error => {
+            console.log(error)
+            this.$notification['error']({
+                message: '错误',
+                description: error || '服务器错误',
+                duration: 4
+              })
+          })
         }
       })
+      console.log('handleSubmit')
     },
 
     getCaptcha (e) {
       e.preventDefault()
       const { form: { validateFields }, state, $message, $notification } = this
-
       validateFields(['mobile'], { force: true },
         (err, values) => {
           if (!err) {

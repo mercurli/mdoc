@@ -12,4 +12,5 @@ import org.springframework.context.annotation.Configuration;
 @MapperScan("com.mer.mdoc.modules.*.mapper")
 @Configuration
 public class MyBatisConfig {
+
 }

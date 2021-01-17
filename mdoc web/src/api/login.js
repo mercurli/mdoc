@@ -67,6 +67,14 @@ export function logout () {
   })
 }
 
+export function register (parameter) {
+  return request({
+    url: userApi.Register,
+    method: 'post',
+    data: parameter
+  })
+}
+
 /**
  * get user 2step code open?
  * @param parameter {*}

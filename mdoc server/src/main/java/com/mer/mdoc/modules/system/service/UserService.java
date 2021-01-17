@@ -31,6 +31,17 @@ public class UserService {
     }
 
     /**
+     * 检查用户名是否存在
+     * @param username
+     * @return
+     */
+    public boolean checkUsernameExist(String username) {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        return sysUserMapper.selectOne(queryWrapper) != null;
+    }
+
+    /**
      * 检查用户是否可用
      * @param userInfo
      * @return
@@ -39,9 +50,14 @@ public class UserService {
         if (userInfo == null) {
             return Result.error("该用户不存在");
         }
-        if (userInfo.getStatus() == 1) {
+        if (userInfo.getStatus() == 0) {
             return Result.error("用户"+ userInfo.getUsername() +"已注销");
         }
         return Result.ok();
     }
+
+    public boolean add(SysUser user) {
+        return sysUserMapper.insert(user) == 1;
+    }
+
 }

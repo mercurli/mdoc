@@ -92,7 +92,7 @@
       </a-form-item>
 
       <div class="user-login-other">
-        <span>{{ $t('user.login.sign-in-with') }}</span>
+        <!-- <span>{{ $t('user.login.sign-in-with') }}</span> -->
         <!-- <a>
           <a-icon class="item-icon" type="alipay-circle"></a-icon>
         </a>
@@ -106,12 +106,12 @@
       </div>
     </a-form>
 
-    <two-step-captcha
+    <!-- <two-step-captcha
       v-if="requiredTwoStepCaptcha"
       :visible="stepCaptchaVisible"
       @success="stepCaptchaSuccess"
       @cancel="stepCaptchaCancel"
-    ></two-step-captcha>
+    ></two-step-captcha> -->
   </div>
 </template>
 
@@ -120,7 +120,7 @@ import md5 from 'md5'
 import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
-import { getSmsCaptcha, get2step } from '@/api/login'
+import { getSmsCaptcha } from '@/api/login'
 
 export default {
   components: {
@@ -146,13 +146,13 @@ export default {
     }
   },
   created () {
-    get2step({ })
-      .then(res => {
-        this.requiredTwoStepCaptcha = res.result.stepCode
-      })
-      .catch(() => {
-        this.requiredTwoStepCaptcha = false
-      })
+    // get2step({ })
+    //   .then(res => {
+    //     this.requiredTwoStepCaptcha = res.result.stepCode
+    //   })
+    //   .catch(() => {
+    //     this.requiredTwoStepCaptcha = false
+    //   })
     // this.requiredTwoStepCaptcha = true
   },
   methods: {
@@ -173,7 +173,6 @@ export default {
       // this.form.resetFields()
     },
     handleSubmit (e) {
-      console.log('@wxc')
       e.preventDefault()
       const {
         form: { validateFields },
@@ -191,11 +190,22 @@ export default {
           console.log('login form', values)
           const loginParams = { ...values }
           delete loginParams.username
-          loginParams[!state.loginType ? 'email' : 'username'] = values.username
+          // loginParams[!state.loginType ? 'email' : 'username'] = values.username
+          loginParams.username = values.username
           loginParams.password = md5(values.password)
           Login(loginParams)
-            .then((res) => this.loginSuccess(res))
-            .catch(err => this.requestFailed(err))
+            .then(res => {
+              console.log(res)
+              if (res.success) {
+                this.loginSuccess(res)
+              } else {
+                console.log(res)
+              }
+            })
+            .catch(err => {
+              console.log(err)
+              this.requestFailed(err)
+            })
             .finally(() => {
               state.loginBtn = false
             })
@@ -277,7 +287,7 @@ export default {
       this.isLoginError = true
       this.$notification['error']({
         message: '错误',
-        description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+        description: err.message || err || '请求出现错误，请稍后再试',
         duration: 4
       })
     }

@@ -27,6 +27,9 @@ import ArticleListContent from '@/components/ArticleListContent'
 
 import Dialog from '@/components/Dialog'
 
+//  editor
+import WangEditor from '@/components/Editor/WangEditor'
+
 export {
   AvatarList,
   Bar,
@@ -52,5 +55,7 @@ export {
   StandardFormRow,
   ArticleListContent,
 
-  Dialog
+  Dialog,
+
+  WangEditor
 }

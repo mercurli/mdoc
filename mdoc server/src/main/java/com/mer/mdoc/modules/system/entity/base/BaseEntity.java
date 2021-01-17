@@ -1,6 +1,6 @@
 package com.mer.mdoc.modules.system.entity.base;
 
-import com.mer.mdoc.core.util.IdUtil;
+import com.mer.mdoc.core.util.IdUtils;
 import lombok.Setter;
 import lombok.Getter;
 
@@ -23,12 +23,9 @@ public class BaseEntity implements Serializable {
 
     @Id
     @Column(length = 32)
-    private String id = IdUtil.generateId();
+    private String id = IdUtils.generateId();
 
     @Column
     private Date createTime = new Date();
-
-    @Column
-    private Date updateTime = new Date();
 
 }

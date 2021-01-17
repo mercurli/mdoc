@@ -110,12 +110,12 @@ export const asyncRouterMap = [
                 component: () => import('../views/list/search/Article'),
                 meta: { title: 'menu.list.search-list.articles', permission: ['table'] }
               },
-              // {
-              //   path: '/list/search/project',
-              //   name: 'SearchProjects',
-              //   component: () => import('../views/list/search/Projects'),
-              //   meta: { title: 'menu.list.search-list.projects', permission: ['table'] }
-              // },
+              {
+                path: '/list/search/project',
+                name: 'SearchProjects',
+                component: () => import('../views/list/search/Projects'),
+                meta: { title: 'menu.list.search-list.projects', permission: ['table'] }
+              },
               {
                 path: '/list/search/application',
                 name: 'SearchApplications',

@@ -41,15 +41,15 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
-    public static Result<Object> ok() {
+    public static <T> Result<T> ok() {
         return new Result<>(true);
     }
 
-    public static Result<Object> data(Object data) {
-        return new Result<>(true, "", data);
+    public static <T> Result<T> data(T data) {
+        return new Result<T>(true, "", data);
     }
 
-    public static Result<Object> error(String message) {
+    public static <T> Result<T> error(String message) {
         return new Result<>(false, message);
     }
 

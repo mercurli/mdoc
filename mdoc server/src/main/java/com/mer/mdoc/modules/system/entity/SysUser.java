@@ -50,6 +50,9 @@ public class SysUser extends BaseEntity {
     private Integer sex;
 
     @Column
+    private String mobile;
+
+    @Column
     private String email;
 
     /**

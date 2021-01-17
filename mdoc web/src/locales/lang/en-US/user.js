@@ -16,6 +16,7 @@ export default {
   'user.login.signup': 'Sign up',
   'user.login.login': 'Login',
   'user.register.register': 'Register',
+  'user.register.userName.placeholder': 'Username',
   'user.register.email.placeholder': 'Email',
   'user.register.password.placeholder': 'Password ',
   'user.register.password.popover-message': 'Please enter at least 6 characters. Please do not use passwords that are easy to guess. ',

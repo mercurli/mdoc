@@ -2,25 +2,28 @@ package com.mer.mdoc.script;
 
 import com.mer.mdoc.util.FileUtils;
 import com.mer.mdoc.util.ProjectUtils;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+import com.mer.mdoc.util.TemplateUtils;
 import freemarker.template.TemplateException;
 import lombok.val;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
+ *
  * @author wxc
  * @date 2021/1/9
- * @version:
- * @title
  */
 public class ReplaceScript {
 
+    /**
+     * 替换所有的java文件
+     * @param pairs
+     */
     public static void replaceAllJava(Map<String, String> pairs) {
         long l = System.currentTimeMillis();
         List<File> javaList = FileUtils.getAllFile(ProjectUtils.getProjectJavaDir(), "java");
@@ -30,39 +33,26 @@ public class ReplaceScript {
         System.out.println("耗时：" + (System.currentTimeMillis() - l) + "ms");
     }
 
-    public static void entityToPlusMapper(String packagePath) throws IOException, TemplateException, URISyntaxException {
-        Configuration cfg = new Configuration(Configuration.VERSION_2_3_30);
-        //指定模板文件的来源
-        String templatePath = ReplaceScript.class.getClassLoader().getResource("template").toURI().getPath();
-        cfg.setDirectoryForTemplateLoading(new File(templatePath));
-        //这是模板的编码
-        cfg.setDefaultEncoding("UTF-8");
-        //获取模板
-        Template template = cfg.getTemplate("Mapper.java");
+    /**
+     * 通过实体类生成Mapper
+     * @param entityPackage 实体类包路径
+     */
+    public static void entityToPlusMapper(String entityPackage) {
         //创建FreeMarker的数据模型
-        Map<String,String> root = new HashMap<>();
-        String dirPath = ProjectUtils.getProjectJavaDir() + File.separator + packagePath.replaceAll("\\.", "/");
-
-        String parentPackage = packagePath.substring(0, packagePath.lastIndexOf("."));
-        Writer out = null;
+        Map<String, Object> dataModel = new HashMap<>();
+        String dirPath = ProjectUtils.getProjectJavaDir() + File.separator + entityPackage.replaceAll("\\.", "/");
+        String parentPackage = entityPackage.substring(0, entityPackage.lastIndexOf("."));
         for (File file : new File(dirPath).listFiles()) {
             val fileType = file.getName().substring(file.getName().lastIndexOf(".") + 1);
             if (!"java".equalsIgnoreCase(fileType)) {
                 continue;
             }
+            val mapperPackage = parentPackage + ".mapper";
             val entityName = file.getName().substring(0, file.getName().lastIndexOf("."));
-            System.out.println(entityName);
-
-            root.put("entityPackage", packagePath);
-            root.put("entityName",entityName);
-            //这是输出文件
-            File f = new File(ProjectUtils.getProjectJavaDir() + File.separator + parentPackage.replaceAll("\\.", "/") + File.separator + "mapper" + File.separator + entityName + "Mapper.java");
-            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)));
-            //将模板与数据模型合并
-            template.process(root, out);
+            dataModel.put("parentPackage", parentPackage);
+            dataModel.put("entityName", entityName);
+            TemplateUtils.createFile("Mapper.java", dataModel, mapperPackage, entityName + "Mapper");
         }
-        out.flush();
-        out.close();
     }
 
 }

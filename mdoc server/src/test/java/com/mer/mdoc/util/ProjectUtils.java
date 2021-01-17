@@ -14,12 +14,18 @@ public class ProjectUtils {
 
     public static final String JAVA_DIR = "src/main/java";
 
+    public static final String TEST_RESOURCES_DIR = "src/test/resources";
+
     public static String getProjectDir() {
         return PROJECT_DIR;
     }
 
     public static String getProjectJavaDir() {
         return PROJECT_DIR + File.separator + JAVA_DIR;
+    }
+
+    public static String getProjectTestResources() {
+        return PROJECT_DIR + File.separator + TEST_RESOURCES_DIR;
     }
 
 }

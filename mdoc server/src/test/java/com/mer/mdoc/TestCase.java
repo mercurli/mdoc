@@ -1,12 +1,10 @@
 package com.mer.mdoc;
 
+import com.mer.mdoc.core.util.PasswordUtils;
+import com.mer.mdoc.script.GenerateEntityScript;
 import com.mer.mdoc.script.ReplaceScript;
-import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 /**
  * @author Mercurli
@@ -19,15 +17,17 @@ public class TestCase {
 
     @Test
     public void test1() {
-        try {
-            ReplaceScript.entityToPlusMapper("com.mer.mdoc.modules.system.entity");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        GenerateEntityScript.genByJson("Note", "com.mer.mdoc.modules.biz.entity");
+    }
+
+    @Test
+    public void test2() {
+        ReplaceScript.entityToPlusMapper("com.mer.mdoc.modules.biz.entity");
+    }
+
+    @Test
+    public void test3() {
+        PasswordUtils.decrypt("", "", "");
     }
 
 }

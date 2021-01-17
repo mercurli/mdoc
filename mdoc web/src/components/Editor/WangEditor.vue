@@ -48,10 +48,14 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .ant-editor-wang {
   .editor-wrapper {
     text-align: left;
   }
+}
+.w-e-text-container,
+.w-e-menu {
+  z-index: 1 !important;
 }
 </style>

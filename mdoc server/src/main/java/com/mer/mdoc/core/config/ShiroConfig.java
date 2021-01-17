@@ -25,11 +25,11 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
         // 拦截器
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
-        shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);
-        filterChainDefinitionMap.put("/role/**", "anon");
-        filterChainDefinitionMap.put("/user/**", "anon");
-        filterChainDefinitionMap.put("/menu/**", "anon");
+        Map<String, String> authMap = new LinkedHashMap<>();
+        shiroFilter.setFilterChainDefinitionMap(authMap);
+        authMap.put("/role/**", "anon");
+        authMap.put("/user/**", "anon");
+        authMap.put("/menu/**", "anon");
         return shiroFilter;
     }
 
