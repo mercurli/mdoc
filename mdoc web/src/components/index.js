@@ -31,6 +31,7 @@ import Dialog from '@/components/Dialog'
 import WangEditor from '@/components/Editor/WangEditor'
 
 import ContextMenu from '@/components/ContextMenu/ContextMenu'
+import ContextMenuGroup from '@/components/ContextMenu/ContextMenuGroup'
 import ContextMenuItem from '@/components/ContextMenu/ContextMenuItem'
 
 export {
@@ -63,5 +64,6 @@ export {
   WangEditor,
 
   ContextMenu,
+  ContextMenuGroup,
   ContextMenuItem
 }
