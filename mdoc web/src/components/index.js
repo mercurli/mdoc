@@ -30,6 +30,9 @@ import Dialog from '@/components/Dialog'
 //  editor
 import WangEditor from '@/components/Editor/WangEditor'
 
+import ContextMenu from '@/components/ContextMenu/ContextMenu'
+import ContextMenuItem from '@/components/ContextMenu/ContextMenuItem'
+
 export {
   AvatarList,
   Bar,
@@ -57,5 +60,8 @@ export {
 
   Dialog,
 
-  WangEditor
+  WangEditor,
+
+  ContextMenu,
+  ContextMenuItem
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div style="width: 160px">
+    <div style="width: 160px" v-contextmenu="contextmenu">
       <a-menu
         :default-selected-keys="['1']"
       >
@@ -29,16 +29,27 @@
       <h1>Ngnix</h1>
       <WangEditor />
     </div>
+    <!-- 右键菜单 -->
+    <context-menu ref="contextmenu">
+      <context-menu-item>
+        <span>新建区</span>
+      </context-menu-item>
+      <context-menu-item>
+        <span>删除</span>
+      </context-menu-item>
+    </context-menu>
   </div>
 </template>
 
 <script>
- import { WangEditor } from '@/components'
+ import { WangEditor, ContextMenu, ContextMenuItem } from '@/components'
 
 export default {
   name: 'Workplace',
   components: {
-    WangEditor
+    WangEditor,
+    ContextMenu,
+    ContextMenuItem
   },
   data () {
     return {
