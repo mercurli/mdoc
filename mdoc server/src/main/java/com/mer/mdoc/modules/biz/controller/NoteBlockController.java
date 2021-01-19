@@ -3,6 +3,8 @@ package com.mer.mdoc.modules.biz.controller;
 import com.mer.mdoc.core.vo.Result;
 import com.mer.mdoc.modules.biz.entity.NoteBlock;
 import com.mer.mdoc.modules.biz.service.NoteBlockService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +26,9 @@ public class NoteBlockController {
 
     @RequestMapping("get")
     public Result<List<NoteBlock>> get(String uId) {
+        Subject currentUser = SecurityUtils.getSubject();
+        Object principal = currentUser.getPrincipal();
+        System.out.println(principal);
         return Result.data(noteBlockService.get(uId));
     }
 

@@ -1,6 +1,5 @@
 package com.mer.mdoc.core.config;
 
-import com.mer.mdoc.modules.system.shiro.realm.ShiroRealm;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;

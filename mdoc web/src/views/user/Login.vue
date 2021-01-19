@@ -35,7 +35,7 @@
               :placeholder="$t('user.login.password.placeholder')"
               v-decorator="[
                 'password',
-                {initialValue: 'admin'},
+                {initialValue: '123456'},
                 {rules: [{ required: true, message: $t('user.password.required') }], validateTrigger: 'blur'}
               ]"
             >
@@ -260,19 +260,7 @@ export default {
       })
     },
     loginSuccess (res) {
-      console.log('loginSuccess')
-      console.log(res)
-      // check res.homePage define, set $router.push name res.homePage
-      // Why not enter onComplete
-      /*
-      this.$router.push({ name: 'analysis' }, () => {
-        console.log('onComplete')
-        this.$notification.success({
-          message: '欢迎',
-          description: `${timeFix()}，欢迎回来`
-        })
-      })
-      */
+      console.log('loginSuccess', res)
       this.$router.push({ path: '/' })
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {

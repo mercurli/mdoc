@@ -3,6 +3,7 @@ package com.mer.mdoc.modules.system.entity;
 import com.mer.mdoc.modules.system.entity.base.BaseEntity;
 import lombok.Setter;
 import lombok.Getter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import java.util.Date;
  */
 @Setter
 @Getter
+@Accessors(chain = true)
 @Entity
 public class SysUser extends BaseEntity {
 

@@ -37,7 +37,7 @@
     <context-menu ref="contextmenu">
       <!-- 新增分区分组 -->
       <context-menu-group ref="contextmenuAddBlockGroup">
-        <context-menu-item>
+        <context-menu-item @click="blockModalVisible = true">
           <span>新建分区</span>
         </context-menu-item>
       </context-menu-group>
@@ -66,6 +66,16 @@
         </context-menu-item>
       </context-menu-group>
     </context-menu>
+    <a-modal
+      title="新建分区"
+      :width="640"
+      :visible="blockModalVisible">
+      <a-form :form="blockForm">
+        <a-form-item label="分区名">
+          <a-input v-decorator="['id', {}]" />
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
@@ -82,61 +92,49 @@ export default {
   },
   data () {
     return {
-        blocks: [
-          {
-            id: '1',
-            name: '学习',
-            createTime: '',
-            display: 1,
-            uId: 1
-          },
-          {
-            id: '2',
-            name: '工作',
-            createTime: '',
-            display: 2,
-            uId: 1
-          },
-          {
-            id: '3',
-            name: '项目',
-            createTime: '',
-            display: 3,
-            uId: 1
-          }
-        ],
-        notes: [
-          {
-            id: '1',
-            bId: '1',
-            title: 'Ngnix',
-            content: '',
-            createTime: '',
-            updateTime: '',
-            display: 1
-          },
-          {
-            id: '2',
-            bId: '1',
-            title: 'apereo',
-            content: 'http://www.apereo.org/cas',
-            createTime: '',
-            updateTime: '',
-            display: 2
-          }
-        ]
+        blocks: [],
+        notes: [],
+        blockModalVisible: false,
+        blockForm: {}
     }
   },
   computed: {
 
   },
+  watch: {
+    blockModalVisible (val) {
+      console.log('blockModalVisible')
+      console.log(val)
+    }
+  },
   created () {
-
   },
   mounted () {
-
+    console.log('user', this.$store.state.user)
+    this.$http.get('/note/block/get', {
+      uId: 1
+    }).then(res => {
+      console.log(res)
+      this.blocks = res.data
+      if (res.data.length > 0) {
+        this.getNodes(res.data[0].bId)
+      }
+    })
   },
   methods: {
+    getNodes (bId) {
+      this.$http.get('/note/get',
+      {
+          bId: bId
+      })
+      .then(res => {
+        console.log(res)
+        this.notes = res.data
+      })
+    },
+    addNote () {
+
+    },
     contextmenuHanlder (event, groups) {
       this.$refs.contextmenu.$children.forEach(component => {
         if (groups.includes(component.$vnode.data.ref)) {

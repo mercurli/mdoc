@@ -24,7 +24,7 @@ public class UserService {
      * @param username
      * @return
      */
-    public SysUser getUserByUsername(String username) {
+    public SysUser getByUsername(String username) {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         return sysUserMapper.selectOne(queryWrapper);
