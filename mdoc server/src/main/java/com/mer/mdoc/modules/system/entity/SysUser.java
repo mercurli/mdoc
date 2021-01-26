@@ -1,12 +1,15 @@
 package com.mer.mdoc.modules.system.entity;
 
 import com.mer.mdoc.modules.system.entity.base.BaseEntity;
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -19,7 +22,7 @@ import java.util.Date;
 @Getter
 @Accessors(chain = true)
 @Entity
-public class SysUser extends BaseEntity {
+public class SysUser extends BaseEntity implements UserDetails {
 
     @Column(nullable = false)
     private String username;
@@ -62,5 +65,30 @@ public class SysUser extends BaseEntity {
      */
     @Column
     private Integer status = 1;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return status == 1;
+    }
 
 }

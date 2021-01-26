@@ -5,6 +5,8 @@ import com.mer.mdoc.core.vo.Result;
 import com.mer.mdoc.modules.system.entity.SysUser;
 import com.mer.mdoc.modules.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,17 +16,13 @@ import org.springframework.stereotype.Service;
  * @title
  */
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private SysUserMapper sysUserMapper;
 
-    /**
-     * 通过用户名获取用户信息
-     * @param username
-     * @return
-     */
-    public SysUser getByUsername(String username) {
+    @Override
+    public SysUser loadUserByUsername(String username) throws UsernameNotFoundException {
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         return sysUserMapper.selectOne(queryWrapper);
@@ -59,5 +57,6 @@ public class UserService {
     public boolean add(SysUser user) {
         return sysUserMapper.insert(user) == 1;
     }
+
 
 }

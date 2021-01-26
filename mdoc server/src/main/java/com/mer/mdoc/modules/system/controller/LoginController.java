@@ -21,7 +21,7 @@ public class LoginController {
 
     @RequestMapping("/login")
     public Result<Object> login(String username, String password) {
-        SysUser userInfo = userService.getByUsername(username);
+        SysUser userInfo = userService.loadUserByUsername(username);
         Result<Object> result = userService.checkUserEnable(userInfo);
         if (!result.isSuccess()) {
             return result;
