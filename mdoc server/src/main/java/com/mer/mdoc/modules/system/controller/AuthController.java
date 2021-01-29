@@ -6,15 +6,12 @@ import com.mer.mdoc.core.vo.Result;
 import com.mer.mdoc.modules.system.entity.SysUser;
 import com.mer.mdoc.modules.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.security.auth.Subject;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,12 +38,7 @@ public class AuthController {
     public Result<Object> login(@RequestBody JSONObject requestJson) {
         String username = requestJson.getString("username");
         String password = requestJson.getString("password");
-        Subject currentUser = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-        currentUser.login(token);
         Map<String, Object> data = new HashMap<>();
-        data.put("token", token);
-        log.info("token: {}", token);
         return Result.data(data);
     }
 
@@ -57,10 +49,6 @@ public class AuthController {
      */
     @RequestMapping("logout")
     public Result<Object> logout() {
-        Subject subject = SecurityUtils.getSubject();
-        if (subject.isAuthenticated()) {
-            subject.logout();
-        }
         return Result.ok();
     }
 
@@ -79,9 +67,7 @@ public class AuthController {
         System.out.println("加密前的密码：" + user.getPassword());
         // 加密次数
         int times = 2;
-        String encodedPassword = new SimpleHash("md5", user.getPassword(), salt, times).toString();
-        System.out.println("加密后的密码：" + encodedPassword);
-        user.setPassword(encodedPassword)
+        user.setPassword("")
                 .setName(user.getUsername())
                 .setSalt(salt);
         if (!userService.add(user)) {
