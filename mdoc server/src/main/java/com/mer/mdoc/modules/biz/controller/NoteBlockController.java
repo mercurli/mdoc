@@ -45,4 +45,13 @@ public class NoteBlockController {
         }
     }
 
+    @RequestMapping("del")
+    public Result<Object> delete(String id) {
+        if (noteBlockService.delete(id)) {
+            return Result.ok();
+        } else {
+            return Result.error("删除失败");
+        }
+    }
+
 }

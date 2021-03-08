@@ -4,6 +4,7 @@ import com.mer.mdoc.modules.system.entity.base.BaseEntity;
 import lombok.Setter;
 import lombok.Getter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -17,7 +18,12 @@ import javax.persistence.Entity;
 @Entity
 public class NoteBlock extends BaseEntity {
 
+	@Column(nullable = false)
 	private String uId;
-	private Integer display;
-	private String name;
-}
+
+	private Integer display;
+
+	@Column(nullable = false)
+	private String name;
+
+}

@@ -1,6 +1,6 @@
 package com.mer.mdoc;
 
-import com.mer.mdoc.core.util.PasswordUtils;
+import com.mer.mdoc.modules.system.entity.SysUser;
 import com.mer.mdoc.script.GenerateEntityScript;
 import com.mer.mdoc.script.ReplaceScript;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,8 @@ public class TestCase {
 
     @Test
     public void test3() {
-        PasswordUtils.decrypt("", "", "");
+        SysUser sysUser = new SysUser().setName("汪");
+        SysUser sysUser1 = new SysUser();
     }
 
 }

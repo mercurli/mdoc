@@ -34,4 +34,8 @@ public class NoteBlockService {
         return noteBlockMapper.updateById(noteBlock) == 1;
     }
 
+    public boolean delete(String id) {
+        return noteBlockMapper.deleteById(id) == 1;
+    }
+
 }

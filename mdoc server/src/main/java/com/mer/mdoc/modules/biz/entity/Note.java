@@ -1,9 +1,10 @@
 package com.mer.mdoc.modules.biz.entity;
 
 import com.mer.mdoc.modules.system.entity.base.BaseEntity;
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Date;
 /**
@@ -18,8 +19,16 @@ import java.util.Date;
 public class Note extends BaseEntity {
 
 	private Integer display;
-	private Date updateTime;
-	private String bId;
-	private String title;
-	private String content;
-}
+
+	@Column(nullable = false)
+	private Date updateTime;
+
+	@Column(nullable = false)
+	private String bId;
+
+	@Column(nullable = false)
+	private String title;
+
+	private String content;
+
+}

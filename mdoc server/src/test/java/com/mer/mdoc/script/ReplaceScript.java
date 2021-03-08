@@ -3,12 +3,9 @@ package com.mer.mdoc.script;
 import com.mer.mdoc.util.FileUtils;
 import com.mer.mdoc.util.ProjectUtils;
 import com.mer.mdoc.util.TemplateUtils;
-import freemarker.template.TemplateException;
 import lombok.val;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
