@@ -20,9 +20,9 @@ public class NoteService {
     @Autowired
     private NoteMapper noteMapper;
 
-    public List<Note> get(String bId) {
+    public List<Note> get(String blockId) {
         QueryWrapper<Note> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("b_id", bId);
+        queryWrapper.eq("BLOCK_ID", blockId);
         return noteMapper.selectList(queryWrapper);
     }
 

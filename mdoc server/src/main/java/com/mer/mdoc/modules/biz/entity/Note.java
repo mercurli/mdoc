@@ -18,13 +18,13 @@ import java.util.Date;
 @Entity
 public class Note extends BaseEntity {
 
-	private Integer display;
+	private String disorder;
 
 	@Column(nullable = false)
 	private Date updateTime;
 
 	@Column(nullable = false)
-	private String bId;
+	private String blockId;
 
 	@Column(nullable = false)
 	private String title;

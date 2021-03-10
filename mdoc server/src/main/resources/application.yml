@@ -13,3 +13,10 @@ spring:
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     show-sql: true
+  # 返回的数据日期格式自动转换为字符串
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  mvc:
+    format:
+      date: yyyy-MM-dd HH:mm:ss

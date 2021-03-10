@@ -19,7 +19,7 @@ import java.util.Date;
 @Setter
 @Getter
 @MappedSuperclass
-public class BaseEntity implements Serializable {
+public class BaseEntity {
 
     @Id
     @Column(length = 32)

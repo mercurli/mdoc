@@ -1,6 +1,5 @@
 package com.mer.mdoc.modules.system.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mer.mdoc.modules.system.entity.base.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,9 +27,8 @@ public class SysMenu extends BaseEntity {
     @Column
     private String icon;
 
-    @JsonProperty
     @Column(length = 32)
-    private String pId;
+    private String parentId;
 
     /**
      * 排序字段

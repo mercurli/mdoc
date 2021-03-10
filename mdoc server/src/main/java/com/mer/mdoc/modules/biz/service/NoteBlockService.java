@@ -20,9 +20,10 @@ public class NoteBlockService {
     @Autowired
     private NoteBlockMapper noteBlockMapper;
 
-    public List<NoteBlock> get(String uId) {
+    public List<NoteBlock> get(String userId) {
         QueryWrapper<NoteBlock> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("u_id", uId);
+        queryWrapper.eq("USER_ID", userId);
+        queryWrapper.orderByAsc("DISORDER");
         return noteBlockMapper.selectList(queryWrapper);
     }
 

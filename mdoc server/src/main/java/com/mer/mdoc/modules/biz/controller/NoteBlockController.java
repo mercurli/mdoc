@@ -23,14 +23,14 @@ public class NoteBlockController {
     private NoteBlockService noteBlockService;
 
     @RequestMapping("get")
-    public Result<List<NoteBlock>> get(String uId) {
-        return Result.data(noteBlockService.get(uId));
+    public Result<List<NoteBlock>> get(String userId) {
+        return Result.data(noteBlockService.get(userId));
     }
 
     @RequestMapping("add")
     public Result<Object> add(NoteBlock noteBlock) {
         if (noteBlockService.add(noteBlock)) {
-            return Result.ok();
+            return Result.data(noteBlock);
         } else {
             return Result.error("保存失败");
         }

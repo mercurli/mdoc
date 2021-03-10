@@ -1,12 +1,11 @@
 package com.mer.mdoc.modules.system.entity;
 
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.io.Serializable;
 
 /**
  * @author Mercurli
@@ -17,14 +16,14 @@ import java.io.Serializable;
 @Setter
 @Getter
 @Entity
-public class SysUserDepartment implements Serializable {
+public class SysUserDepartment {
 
     @Id
     @Column(length = 32)
     private String id;
 
     @Column(length = 32)
-    private String uId;
+    private String userId;
 
     @Column(length = 32)
     private String departId;

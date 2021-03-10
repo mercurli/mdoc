@@ -23,8 +23,8 @@ public class SysRoleMenu {
     private String id;
 
     @Column(length = 32)
-    private String rId;
+    private String roleId;
 
     @Column(length = 32)
-    private String mId;
+    private String menuId;
 }

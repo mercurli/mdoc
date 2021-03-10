@@ -1,37 +1,32 @@
 <template>
   <div class="wrapper">
-    <div style="width: 160px; background-color: #fffef9" @contextmenu.prevent="handleContextmenu($event, ['contextmenuAddBlockGroup'])">
-      <a-menu
-        :selected-keys="blockActive"
-        ref="blockMenu"
-      >
-        <template v-for="(item, index) in blocks">
-          <a-menu-item
-            :key="item.id"
-            @contextmenu.prevent.stop="handleContextmenu($event, ['contextmenuAddBlockGroup', 'contextmenuEditBlockGroup'], index)">
-            <a-icon type="appstore" />
-            <span>{{ item.name }}</span>
-          </a-menu-item>
-        </template>
-      </a-menu>
+    <div style="width: 180px; background-color: #fffef9; border-right: 1px solid #eee;" @contextmenu.prevent="handleContextmenu($event, ['contextmenuAddBlockGroup'])">
+      <ul class="menu">
+        <li
+          v-for="(item, index) in blocks"
+          :key="item.id"
+          @contextmenu.prevent.stop="handleContextmenu($event, ['contextmenuAddBlockGroup', 'contextmenuEditBlockGroup'], index)"
+          @click="activeBlockId = item.id"
+          :class="{ 'menu-item': true, 'active': item.id === activeBlockId }">
+          <a-icon type="appstore" />
+          <span>{{ item.name }}</span>
+        </li>
+      </ul>
     </div>
-    <div style="width: 200px; background-color: #fffcf9" @contextmenu.prevent="handleContextmenu($event, ['contextmenuAddNoteGroup'])">
-      <a-menu
-        :default-selected-keys="['1']"
-        mode="inline"
-      >
-        <template v-for="item in notes">
-          <a-menu-item
-            :key="item.id"
-            @contextmenu.prevent.stop="handleContextmenu($event, ['contextmenuAddNoteGroup', 'contextmenuEditNoteGroup'])">
-            <a-icon type="note" />
-            <span>{{ item.title }}</span>
-          </a-menu-item>
-        </template>
-      </a-menu>
+    <div style="width: 180px; background-color: #fffef9; border-right: 1px solid #eee;" @contextmenu.prevent="handleContextmenu($event, ['contextmenuAddNoteGroup'])">
+      <ul class="menu">
+        <li
+          v-for="(item, index) in notes"
+          :key="item.id"
+          @contextmenu.prevent.stop="handleContextmenu($event, ['contextmenuAddNoteGroup', 'contextmenuEditNoteGroup'])"
+          @click="activeNoteIndex = index"
+          :class="{ 'menu-item': true, 'active': activeNoteIndex === index }">
+          <span>{{ item.title || '无标题' }}</span>
+        </li>
+      </ul>
     </div>
     <div style="background: #fff; width: calc(100% - 360px);padding: 20px">
-      <a-input style="border: 0; font-size: 24px; margin-bottom: 12px"/>
+      <input v-model="noteTitle" class="note-title"/>
       <WangEditor />
     </div>
     <!-- 分区菜单 -->
@@ -47,13 +42,13 @@
         <context-menu-item>
           <span>重命名分区</span>
         </context-menu-item>
-        <context-menu-item @click.native="handleDelBlock">
+        <context-menu-item @click.native="delBlack">
           <span>删除分区</span>
         </context-menu-item>
       </context-menu-group>
       <!-- 新增笔记分组 -->
       <context-menu-group ref="contextmenuAddNoteGroup">
-        <context-menu-item @click.native="handleAddNote">
+        <context-menu-item @click.native="addNote">
           <span>新建笔记</span>
         </context-menu-item>
       </context-menu-group>
@@ -69,13 +64,13 @@
     </context-menu>
     <a-modal
       title="新建分区"
-      :width="640"
+      :width="600"
       :visible="blockModalVisible"
-      @ok="handleAddBlock"
+      @ok="addBlock"
       @cancel="blockModalVisible = false">
-      <a-form :form="blockForm">
+      <a-form :form="blockForm" :label-col="{ span: 5 }" :wrapper-col="{ span: 17 }">
         <a-form-item label="分区名">
-          <a-input ref="blockName" v-decorator="['name', { rules: [{ required: true, message: '请输入分区名！' }] }]" @keyup.enter="handleAddBlock" />
+          <a-input ref="blockName" v-decorator="['name', { rules: [{ required: true, message: '请输入分区名！' }] }]" @keyup.enter="addBlock" />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -96,22 +91,35 @@ export default {
   data () {
     return {
         blocks: [],
-        notes: [],
-        blockActive: ['1'],
+        activeBlockId: '',
         blockModalVisible: false,
-        blockForm: this.$form.createForm(this)
+        blockForm: this.$form.createForm(this),
+        notes: [],
+        activeNoteIndex: 0,
+        noteTitle: ''
     }
-  },
-  computed: {
-
   },
   watch: {
-    blockModalVisible (val) {
-      console.log('blockModalVisible')
+    activeBlockId (val) {
+      this.getNotes(val)
+    },
+    notes (val) {
       console.log(val)
+    },
+    noteTitle (val) {
+      console.log(val)
+      if (this.notes.length) {
+        this.notes[this.activeNoteIndex].title = val
+        console.log(this.notes[this.activeNoteIndex])
+        this.$http.get('/note/update',
+          {
+            params: this.notes[this.activeNoteIndex]
+          })
+          .then(res => {
+            console.log(res)
+          })
+      }
     }
-  },
-  created () {
   },
   mounted () {
     console.log('user', this.$store.state.user)
@@ -127,35 +135,38 @@ export default {
         console.log(res)
         this.blocks = res.data
         if (res.data.length > 0) {
-          this.getNodes(res.data[0].bId)
+          // this.getNotes(res.data[0].bId)
         }
       })
     },
-    handleAddBlock () {
+    addBlock () {
       this.blockForm.validateFields((err, values) => {
         if (!err) {
+          const disorder = this.blocks.length ? parseInt(this.blocks[this.blocks.length - 1].disorder) + 1 : 1
           this.$http.get('/note/block/add',
             {
               params: {
                 uId: 1,
-                display: 1,
+                disorder: disorder,
                 name: values.name
               }
             })
             .then(res => {
               console.log(res)
+              this.blocks.push(res.data)
+              this.activeBlockId = res.data.id
+              this.addNote()
               this.blockModalVisible = false
               this.blockForm.resetFields()
-              this.getBlocks()
             })
         }
       })
     },
-    handleDelBlock () {
+    delBlack () {
       this.$http.get('/note/block/del',
         {
           params: {
-            id: this.blockActive[0]
+            id: this.activeBlockId
           }
         })
         .then(res => {
@@ -164,34 +175,39 @@ export default {
           this.getBlocks()
         })
     },
-    getNodes (bId) {
+    getNotes (bId) {
       this.$http.get('/note/get',
       {
-          bId: bId
+          params: {
+            bId: bId
+          }
       })
       .then(res => {
         console.log(res)
         this.notes = res.data
+        if (this.notes.length) {
+          this.noteTitle = this.notes[this.activeNoteIndex].title
+        }
       })
     },
-    handleAddNote () {
+    addNote () {
+      const disorder = this.notes.length ? parseInt(this.notes[this.notes.length - 1].disorder) + 1 : 1
       this.$http.get('/note/add',
         {
           params: {
-            bId: 1,
-            display: 1,
-            title: '无标题'
+            bId: this.activeBlockId,
+            disorder: disorder
           }
         })
         .then(res => {
           console.log(res)
+          this.notes.push(res.data)
         })
     },
     handleContextmenu (event, groups, index) {
       if (groups.includes('contextmenuEditBlockGroup')) {
         console.log(this.blocks[index])
-        this.blockActive[0] = this.blocks[index].id
-        console.log(this.blockActive)
+        this.activeBlockId = this.blocks[index].id
       }
       this.$refs.contextmenu.$children.forEach(component => {
         if (groups.includes(component.$vnode.data.ref)) {
@@ -212,12 +228,41 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
   .wrapper {
     display: flex;
     height: calc(100vh - 112px);
   }
-  .wrapper > div {
-    height: 100%;
+  .wrapper {
+    div {
+      height: 100%;
+    }
+  }
+  .menu {
+    padding-left: 0;
+    .menu-item {
+      height: 40px;
+      line-height: 40px;
+      padding: 0 12px;
+      &:hover {
+        background-color: #f5f4ee;
+        cursor: pointer;
+      }
+      &.active {
+        background-color: #ddd;
+      }
+      .anticon {
+        margin-right: 8px;
+      }
+    }
+  }
+  .note-title {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 12px;
+    font-size: 24px;
+    &:focus {
+      outline: none;
+    }
   }
 </style>
