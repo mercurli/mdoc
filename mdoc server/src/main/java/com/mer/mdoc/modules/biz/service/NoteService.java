@@ -6,6 +6,7 @@ import com.mer.mdoc.modules.biz.mapper.NoteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,7 +32,8 @@ public class NoteService {
     }
 
     public boolean update(Note note) {
-        return noteMapper.insert(note) == 1;
+        note.setUpdateTime(new Date());
+        return noteMapper.updateById(note) == 1;
     }
 
 }

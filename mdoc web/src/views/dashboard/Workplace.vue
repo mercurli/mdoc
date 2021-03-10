@@ -25,9 +25,9 @@
         </li>
       </ul>
     </div>
-    <div style="background: #fff; width: calc(100% - 360px);padding: 20px">
-      <input v-model="noteTitle" class="note-title"/>
-      <WangEditor />
+    <div style="background: #fff; width: calc(100% - 360px); padding: 20px; overflow: hidden;">
+      <input v-model="noteTitle" @blur="updateNote" class="note-title"/>
+      <WangEditor :value="noteContent" />
     </div>
     <!-- 分区菜单 -->
     <context-menu ref="contextmenu">
@@ -42,7 +42,7 @@
         <context-menu-item>
           <span>重命名分区</span>
         </context-menu-item>
-        <context-menu-item @click.native="delBlack">
+        <context-menu-item @click.native="delBlock">
           <span>删除分区</span>
         </context-menu-item>
       </context-menu-group>
@@ -57,7 +57,7 @@
         <context-menu-item>
           <span>重命名笔记</span>
         </context-menu-item>
-        <context-menu-item>
+        <context-menu-item @click.native="delNote">
           <span>删除笔记</span>
         </context-menu-item>
       </context-menu-group>
@@ -96,11 +96,13 @@ export default {
         blockForm: this.$form.createForm(this),
         notes: [],
         activeNoteIndex: 0,
-        noteTitle: ''
+        noteTitle: '',
+        noteContent: 'test'
     }
   },
   watch: {
     activeBlockId (val) {
+      console.log('activeBlockId', this.activeBlockId)
       this.getNotes(val)
     },
     notes (val) {
@@ -108,35 +110,33 @@ export default {
     },
     noteTitle (val) {
       console.log(val)
-      if (this.notes.length) {
-        this.notes[this.activeNoteIndex].title = val
-        console.log(this.notes[this.activeNoteIndex])
-        this.$http.get('/note/update',
-          {
-            params: this.notes[this.activeNoteIndex]
-          })
-          .then(res => {
-            console.log(res)
-          })
-      }
+      this.notes[this.activeNoteIndex].title = val
+    },
+    noteContent (val) {
+      console.log(val)
+      this.notes[this.activeNoteIndex].content = val
     }
   },
   mounted () {
     console.log('user', this.$store.state.user)
-    this.getBlocks()
+    this.getBlocks().then(() => {
+      if (this.blocks.length) {
+        this.activeBlockId = this.blocks[0].id
+      }
+    })
   },
   methods: {
     getBlocks () {
-      this.$http.get('/note/block/get', {
-        params: {
-          uId: 1
-        }
-      }).then(res => {
-        console.log(res)
-        this.blocks = res.data
-        if (res.data.length > 0) {
-          // this.getNotes(res.data[0].bId)
-        }
+      return new Promise(resolve => {
+        this.$http.get('/note/block/get', {
+          params: {
+            userId: 1
+          }
+        }).then(res => {
+          console.log(res)
+          this.blocks = res.data
+          resolve()
+        })
       })
     },
     addBlock () {
@@ -146,7 +146,7 @@ export default {
           this.$http.get('/note/block/add',
             {
               params: {
-                uId: 1,
+                userId: 1,
                 disorder: disorder,
                 name: values.name
               }
@@ -162,7 +162,7 @@ export default {
         }
       })
     },
-    delBlack () {
+    delBlock () {
       this.$http.get('/note/block/del',
         {
           params: {
@@ -172,14 +172,18 @@ export default {
         .then(res => {
           console.log(res)
           this.$message.success('删除成功')
-          this.getBlocks()
+          this.getBlocks().then(() => {
+            if (this.blocks.length) {
+              this.activeBlockId = this.blocks[this.blocks.length - 1].id
+            }
+          })
         })
     },
-    getNotes (bId) {
+    getNotes (blockId) {
       this.$http.get('/note/get',
       {
           params: {
-            bId: bId
+            blockId: blockId
           }
       })
       .then(res => {
@@ -195,13 +199,34 @@ export default {
       this.$http.get('/note/add',
         {
           params: {
-            bId: this.activeBlockId,
+            blockId: this.activeBlockId,
             disorder: disorder
           }
         })
         .then(res => {
           console.log(res)
           this.notes.push(res.data)
+        })
+    },
+    updateNote () {
+      this.$http.get('/note/update',
+        {
+          params: this.notes[this.activeNoteIndex]
+        })
+        .then(res => {
+          console.log(res)
+        })
+    },
+    delNote () {
+      this.$http.get('/note/del',
+        {
+          params: {
+            id: this.notes[this.activeNoteIndex].id
+          }
+        })
+        .then(res => {
+          console.log(res)
+          this.$message.success('删除成功')
         })
     },
     handleContextmenu (event, groups, index) {

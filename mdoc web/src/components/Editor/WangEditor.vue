@@ -27,6 +27,7 @@ export default {
   },
   watch: {
     value (val) {
+      console.log('value', val)
       this.editorContent = val
       this.editor.txt.html(val)
     }
@@ -39,6 +40,7 @@ export default {
       this.editor = new WEditor(this.$refs.editor)
       // this.editor.onchangeTimeout = 200
       this.editor.customConfig.onchange = (html) => {
+        console.log(this)
         this.editorContent = html
         this.$emit('change', this.editorContent)
       }
@@ -50,6 +52,7 @@ export default {
 
 <style lang="less">
 .ant-editor-wang {
+  overflow: hidden;
   .editor-wrapper {
     text-align: left;
   }
