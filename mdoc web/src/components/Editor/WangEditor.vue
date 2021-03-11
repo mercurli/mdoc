@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls">
-    <div ref="editor" class="editor-wrapper"></div>
+    <div ref="editor" class="editor-wrapper" style="height: 800px"></div>
   </div>
 </template>
 
@@ -27,9 +27,8 @@ export default {
   },
   watch: {
     value (val) {
-      console.log('value', val)
       this.editorContent = val
-      this.editor.txt.html(val)
+      this.editor.txt.html(val || '')
     }
   },
   mounted () {
@@ -40,7 +39,6 @@ export default {
       this.editor = new WEditor(this.$refs.editor)
       // this.editor.onchangeTimeout = 200
       this.editor.customConfig.onchange = (html) => {
-        console.log(this)
         this.editorContent = html
         this.$emit('change', this.editorContent)
       }
@@ -52,7 +50,6 @@ export default {
 
 <style lang="less">
 .ant-editor-wang {
-  overflow: hidden;
   .editor-wrapper {
     text-align: left;
   }

@@ -44,20 +44,20 @@ export const asyncRouterMap = [
         ]
       },
       // tools
-      {
-        path: '/tools',
-        redirect: '/tools/json',
-        component: RouteView,
-        meta: { title: '工具', icon: 'form', permission: ['tools'] },
-        children: [
-          {
-            path: '/tools/json',
-            name: 'Json',
-            component: () => import('@/views/tools/Json'),
-            meta: { title: 'json', keepAlive: true, permission: ['tools'] }
-          }
-        ]
-      },
+      // {
+      //   path: '/tools',
+      //   redirect: '/tools/json',
+      //   component: RouteView,
+      //   meta: { title: '工具', icon: 'form', permission: ['tools'] },
+      //   children: [
+      //     {
+      //       path: '/tools/json',
+      //       name: 'Json',
+      //       component: () => import('@/views/tools/Json'),
+      //       meta: { title: 'json', keepAlive: true, permission: ['tools'] }
+      //     }
+      //   ]
+      // },
       // forms
       {
         path: '/form',

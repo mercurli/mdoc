@@ -27,7 +27,7 @@
     </div>
     <div style="background: #fff; width: calc(100% - 360px); padding: 20px; overflow: hidden;">
       <input v-model="noteTitle" @blur="updateNote" class="note-title"/>
-      <WangEditor :value="noteContent" />
+      <WangEditor :value="noteContent" @change="handleEditorChange"/>
     </div>
     <!-- 分区菜单 -->
     <context-menu ref="contextmenu">
@@ -97,24 +97,22 @@ export default {
         notes: [],
         activeNoteIndex: 0,
         noteTitle: '',
-        noteContent: 'test'
+        noteContent: '233'
     }
   },
   watch: {
     activeBlockId (val) {
-      console.log('activeBlockId', this.activeBlockId)
       this.getNotes(val)
     },
     notes (val) {
-      console.log(val)
+      console.log('notes', val)
+    },
+    activeNoteIndex (index) {
+      this.noteTitle = this.notes[index].title
+      this.noteContent = this.notes[index].content
     },
     noteTitle (val) {
-      console.log(val)
       this.notes[this.activeNoteIndex].title = val
-    },
-    noteContent (val) {
-      console.log(val)
-      this.notes[this.activeNoteIndex].content = val
     }
   },
   mounted () {
@@ -191,6 +189,7 @@ export default {
         this.notes = res.data
         if (this.notes.length) {
           this.noteTitle = this.notes[this.activeNoteIndex].title
+          this.noteContent = this.notes[this.activeNoteIndex].content
         }
       })
     },
@@ -227,6 +226,17 @@ export default {
         .then(res => {
           console.log(res)
           this.$message.success('删除成功')
+        })
+    },
+    handleEditorChange (content) {
+      this.notes[this.activeNoteIndex].content = content
+      this.$http.get('/note/update',
+        {
+          params: this.notes[this.activeNoteIndex]
+        })
+        .then(res => {
+          console.log(res)
+          console.log('保存成功')
         })
     },
     handleContextmenu (event, groups, index) {
