@@ -28,7 +28,7 @@ import ArticleListContent from '@/components/ArticleListContent'
 import Dialog from '@/components/Dialog'
 
 //  editor
-import WangEditor from '@/components/Editor/WangEditor'
+import MerEditor from '@/components/Editor/MerEditor'
 
 import ContextMenu from '@/components/ContextMenu/ContextMenu'
 import ContextMenuGroup from '@/components/ContextMenu/ContextMenuGroup'
@@ -61,7 +61,7 @@ export {
 
   Dialog,
 
-  WangEditor,
+  MerEditor,
 
   ContextMenu,
   ContextMenuGroup,

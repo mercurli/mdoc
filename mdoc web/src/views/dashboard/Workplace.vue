@@ -27,7 +27,7 @@
     </div>
     <div style="background: #fff; width: calc(100% - 360px); padding: 20px; overflow: hidden;">
       <input v-model="noteTitle" @blur="updateNote" class="note-title"/>
-      <WangEditor :value="noteContent" @change="handleEditorChange"/>
+      <MerEditor :content="noteContent" @change="handleEditorChange"/>
     </div>
     <!-- 分区菜单 -->
     <context-menu ref="contextmenu">
@@ -78,12 +78,12 @@
 </template>
 
 <script>
- import { WangEditor, ContextMenu, ContextMenuGroup, ContextMenuItem } from '@/components'
+ import { MerEditor, ContextMenu, ContextMenuGroup, ContextMenuItem } from '@/components'
 
 export default {
   name: 'Workplace',
   components: {
-    WangEditor,
+    MerEditor,
     ContextMenu,
     ContextMenuGroup,
     ContextMenuItem
@@ -188,8 +188,9 @@ export default {
         console.log(res)
         this.notes = res.data
         if (this.notes.length) {
-          this.noteTitle = this.notes[this.activeNoteIndex].title
-          this.noteContent = this.notes[this.activeNoteIndex].content
+          this.activeNoteIndex = 0
+          this.noteTitle = this.notes[0].title
+          this.noteContent = this.notes[0].content
         }
       })
     },
@@ -269,7 +270,7 @@ export default {
     height: calc(100vh - 112px);
   }
   .wrapper {
-    div {
+    & > div {
       height: 100%;
     }
   }
